@@ -1,0 +1,2 @@
+# WaifuPls
+WaifuPls is a discord bot that sends generates random waifus from the internet.
