@@ -1,0 +1,27 @@
+{
+  "name": "waifupls",
+  "version": "1.0.0",
+  "description": "WaifuPls is a discord bot that sends generates random waifus from the internet.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjworks/WaifuPls.git"
+  },
+  "keywords": [
+    "waifupls",
+    "discord"
+  ],
+  "author": "rjworks",
+  "license": "GNU General Public License v3.0",
+  "bugs": {
+    "url": "https://github.com/rjworks/WaifuPls/issues"
+  },
+  "homepage": "https://github.com/rjworks/WaifuPls#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.1"
+  }
+}
