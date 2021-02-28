@@ -8,8 +8,12 @@ const pfp = 'https://github.com/rjworks/WaifuPls/blob/master/assets/pfp.jpg?raw=
 const github = 'https://github.com/rjworks/WaifuPls';
 const modPerms = ["ADMINISTRATOR","MANAGE_MESSAGES"];
 
-client.on( 'ready', () => {
+client.on( 'ready', async () => {
     console.log( `Logged in as ${ client.user.tag }!` );
+    await client.user.setActivity({
+        type: "CUSTOM_STATUS",
+        name: "Ping me!"
+    });
 } );
 
 client.on( 'message', msg => {
