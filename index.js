@@ -1,7 +1,7 @@
 const discord = require( 'discord.js' );
 const client = new discord.Client();
 const fs = require( 'fs' );
-const WaifuApi = require( "./WaifuApi" );
+const WaifuApi = require( "./api/WaifuApi" );
 const config = JSON.parse( fs.readFileSync( "config.json", "utf-8" ) );
 const waifuApi = new WaifuApi( config.mywaifulist_key )
 
