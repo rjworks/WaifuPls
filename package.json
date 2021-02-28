@@ -22,7 +22,6 @@
   "homepage": "https://github.com/rjworks/WaifuPls#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "discord.js": "^12.5.1",
-    "waifu-generator": "^1.1.1"
+    "discord.js": "^12.5.1"
   }
 }
