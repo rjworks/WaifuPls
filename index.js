@@ -20,7 +20,7 @@ client.on( 'message', msg => {
         const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
         switch ( command ){
-            case "waifupls":
+            case "random":
             waifuApi.getRandomWaifu().then( ( waifu ) => {
                 // normally this happens when there's too much requests
                 if ( waifu == null ) {
@@ -51,12 +51,81 @@ client.on( 'message', msg => {
                 msg.reply( exampleEmbed )
             } )
                 break;
+            case "daily":
+                waifuApi.getDailyWaifu().then( ( waifu ) => {
+                    // normally this happens when there's too much requests
+                    if ( waifu == null ) {
+                        msg.reply( "oop! Pls slow down :)" )
+                        return;
+                    }
+                    // just so that it doesn't show nothing when an anime/waifu doesn't have a description
+                    const animeDescription = waifu.appearances[ 0 ].description == "" ? "No description given :(" : waifu.appearances[ 0 ].description;
+                    const waifuDescription = waifu.description == "" ? "No description given :(" : waifu.description;
+                    // embedded reply
+                    const exampleEmbed = new discord.MessageEmbed()
+                        .setColor( '#f59542' )
+                        .setTitle( waifu.name )
+                        .setURL( waifu.url )
+                        .setAuthor( 'WaifuPls', pfp, github )
+                        .setDescription( waifuDescription )
+                        .addFields(
+                            {
+                                name: `Anime`,
+                                value: `[${ waifu.appearances[ 0 ].name }](${ waifu.appearances[ 0 ].url })` + " - " + animeDescription
+                            },
+                            { name: 'Likes', value: waifu.likes },
+                            { name: 'Trash', value: waifu.trash },
+                        )
+                        .setImage( waifu.display_picture )
+                        .setTimestamp()
+                        .setFooter( 'WaifuPls', pfp );
+                    msg.reply( exampleEmbed )
+                } )
+                break;
+            case "best":
+                waifuApi.getBestWaifusThisSeason().then( ( waifu ) => {
+                    // normally this happens when there's too much requests
+                    if ( waifu == null ) {
+                        msg.reply( "oop! Pls slow down :)" )
+                        return;
+                    }
+                    // just so that it doesn't show nothing when an anime/waifu doesn't have a description
+                    for ( let i = 0; i < 9; i++){
+                        const animeDescription = waifu.appearances[ i ].description == "" ? "No description given :(" : waifu.appearances[ i ].description;
+                        const waifuDescription = waifu.description == "" ? "No description given :(" : waifu.description;
+                        // embedded reply
+                        const exampleEmbed = new discord.MessageEmbed()
+                            .setColor( '#f59542' )
+                            .setTitle( waifu[i].name )
+                            .setURL( waifu[i].url )
+                            .setAuthor( 'WaifuPls', pfp, github )
+                            .setDescription( waifuDescription )
+                            .addFields(
+                                {
+                                    name: `Anime`,
+                                    value: `[${ waifu[i].appearances[ 0 ].name }](${ waifu[i].appearances[ 0 ].url })` + " - " + animeDescription
+                                },
+                                { name: 'Likes', value: waifu[i].likes },
+                                { name: 'Trash', value: waifu[i].trash },
+                            )
+                            .setImage( waifu[i].display_picture )
+                            .setTimestamp()
+                            .setFooter( 'WaifuPls', pfp );
+                        msg.reply( exampleEmbed )
+                    }
+                } )
+                break;
             case "setprefix":
                 for(let perm of modPerms){
                     if(!msg.guild.member(msg.author).hasPermission(perm)){
                         msg.reply(config.no_perm);
                         return false;
                     }
+                }
+                console.log(args[0])
+                if(args[0] === undefined){
+                    msg.reply("usage: " + config.prefix + "setprefix [prefix]")
+                    return;
                 }
                 config.prefix = args[0];
                 fs.writeFileSync("config.json", JSON.stringify(config));
