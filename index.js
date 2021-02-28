@@ -11,8 +11,8 @@ const modPerms = ["ADMINISTRATOR","MANAGE_MESSAGES"];
 client.on( 'ready', async () => {
     console.log( `Logged in as ${ client.user.tag }!` );
     await client.user.setActivity({
-        type: "CUSTOM_STATUS",
-        name: "Ping me!"
+        type: "WATCHING",
+        name: config.prefix + "help"
     });
 } );
 
