@@ -27,20 +27,17 @@ client.on( 'message', msg => {
                     msg.reply( "oop! Pls slow down :)" )
                     return;
                 }
-                // just so that it doesn't show nothing when an anime/waifu doesn't have a description
-                const animeDescription = waifu.appearances[ 0 ].description == "" ? "No description given :(" : waifu.appearances[ 0 ].description;
-                const waifuDescription = waifu.description == "" ? "No description given :(" : waifu.description;
                 // embedded reply
                 const exampleEmbed = new discord.MessageEmbed()
                     .setColor( '#f59542' )
-                    .setTitle( waifu.name )
+                    .setTitle( `[Random waifu] ${waifu.name}` )
                     .setURL( waifu.url )
                     .setAuthor( 'WaifuPls', pfp, github )
                     .setDescription( waifuDescription )
                     .addFields(
                         {
                             name: `Anime`,
-                            value: `[${ waifu.appearances[ 0 ].name }](${ waifu.appearances[ 0 ].url })` + " - " + animeDescription
+                            value: `[${ waifu.appearances[ 0 ].name }](${ waifu.appearances[ 0 ].url })` + " - " + waifu.appearances[ 0 ].description
                         },
                         { name: 'Likes', value: waifu.likes },
                         { name: 'Trash', value: waifu.trash },
@@ -53,25 +50,20 @@ client.on( 'message', msg => {
                 break;
             case "daily":
                 waifuApi.getDailyWaifu().then( ( waifu ) => {
-                    // normally this happens when there's too much requests
                     if ( waifu == null ) {
                         msg.reply( "oop! Pls slow down :)" )
                         return;
                     }
-                    // just so that it doesn't show nothing when an anime/waifu doesn't have a description
-                    const animeDescription = waifu.appearances[ 0 ].description == "" ? "No description given :(" : waifu.appearances[ 0 ].description;
-                    const waifuDescription = waifu.description == "" ? "No description given :(" : waifu.description;
-                    // embedded reply
                     const exampleEmbed = new discord.MessageEmbed()
                         .setColor( '#f59542' )
-                        .setTitle( waifu.name )
+                        .setTitle( `[Daily waifu] ${waifu.name}` )
                         .setURL( waifu.url )
                         .setAuthor( 'WaifuPls', pfp, github )
-                        .setDescription( waifuDescription )
+                        .setDescription( waifu.description )
                         .addFields(
                             {
                                 name: `Anime`,
-                                value: `[${ waifu.appearances[ 0 ].name }](${ waifu.appearances[ 0 ].url })` + " - " + animeDescription
+                                value: `[${ waifu.appearances[ 0 ].name }](${ waifu.appearances[ 0 ].url })` + " - " + waifu.appearances[ 0 ].description
                             },
                             { name: 'Likes', value: waifu.likes },
                             { name: 'Trash', value: waifu.trash },
@@ -84,26 +76,21 @@ client.on( 'message', msg => {
                 break;
             case "best":
                 waifuApi.getBestWaifusThisSeason().then( ( waifu ) => {
-                    // normally this happens when there's too much requests
                     if ( waifu == null ) {
                         msg.reply( "oop! Pls slow down :)" )
                         return;
                     }
-                    // just so that it doesn't show nothing when an anime/waifu doesn't have a description
-                    for ( let i = 0; i < 9; i++){
-                        const animeDescription = waifu.appearances[ i ].description == "" ? "No description given :(" : waifu.appearances[ i ].description;
-                        const waifuDescription = waifu.description == "" ? "No description given :(" : waifu.description;
-                        // embedded reply
+                    for ( let i = 0; i < 10; i++){
                         const exampleEmbed = new discord.MessageEmbed()
                             .setColor( '#f59542' )
-                            .setTitle( waifu[i].name )
+                            .setTitle( `[#${i+1} best waifu of the season] ${waifu[i].name}` )
                             .setURL( waifu[i].url )
                             .setAuthor( 'WaifuPls', pfp, github )
-                            .setDescription( waifuDescription )
+                            .setDescription( waifu[ i ].description )
                             .addFields(
                                 {
                                     name: `Anime`,
-                                    value: `[${ waifu[i].appearances[ 0 ].name }](${ waifu[i].appearances[ 0 ].url })` + " - " + animeDescription
+                                    value: `[${ waifu[i].appearances[ 0 ].name }](${ waifu[i].appearances[ 0 ].url })` + " - " + waifu[ i ].appearances[0].description
                                 },
                                 { name: 'Likes', value: waifu[i].likes },
                                 { name: 'Trash', value: waifu[i].trash },
@@ -115,6 +102,72 @@ client.on( 'message', msg => {
                     }
                 } )
                 break;
+            case "trash":
+                waifuApi.getTrashWaifusThisSeason().then( ( waifu ) => {
+                    if ( waifu == null ) {
+                        msg.reply( "oop! Pls slow down :)" )
+                        return;
+                    }
+                    for ( let i = 0; i < 10; i++){
+                        const exampleEmbed = new discord.MessageEmbed()
+                            .setColor( '#f59542' )
+                            .setTitle( `[#${i+1} most trash waifu of the season] ${waifu[i].name}` )
+                            .setURL( waifu[i].url )
+                            .setAuthor( 'WaifuPls', pfp, github )
+                            .setDescription(waifu[ i ].appearances[0].description)
+                            .addFields(
+                                {
+                                    name: `Anime`,
+                                    value: `[${ waifu[i].appearances[ 0 ].name }](${ waifu[i].appearances[ 0 ].url })` + " - " + waifu[ i ].appearances[0].description
+                                },
+                                { name: 'Likes', value: waifu[i].likes },
+                                { name: 'Trash', value: waifu[i].trash },
+                            )
+                            .setImage( waifu[i].display_picture )
+                            .setTimestamp()
+                            .setFooter( 'WaifuPls', pfp );
+                        msg.reply( exampleEmbed )
+                    }
+                } )
+                break;
+            case "popular":
+                waifuApi.getPopularWaifusThisSeason().then( ( waifu ) => {
+                    if ( waifu == null ) {
+                        msg.reply( "oop! Pls slow down :)" )
+                        return;
+                    }
+                    for ( let i = 0; i < 10; i++){
+                        const exampleEmbed = new discord.MessageEmbed()
+                            .setColor( '#f59542' )
+                            .setTitle( `[#${i+1} most popular waifu of the season] ${waifu[i].name}` )
+                            .setURL( waifu[i].url )
+                            .setAuthor( 'WaifuPls', pfp, github )
+                            .setDescription( waifuDescription )
+                            .addFields(
+                                {
+                                    name: `Anime`,
+                                    value: `[${ waifu[i].appearances[ 0 ].name }](${ waifu[i].appearances[ 0 ].url })` + " - " + waifu[ i ].appearances[0].description
+                                },
+                                { name: 'Likes', value: waifu[i].likes },
+                                { name: 'Trash', value: waifu[i].trash },
+                            )
+                            .setImage( waifu[i].display_picture )
+                            .setTimestamp()
+                            .setFooter( 'WaifuPls', pfp );
+                        msg.reply( exampleEmbed )
+                    }
+                } )
+                break;
+            // case "search":
+            //     const searchTerm = args[0];
+            //     if(searchTerm === undefined){
+            //         msg.reply("usage: " + config.prefix + "search <waifu>")
+            //         return;
+            //     }
+            //     waifuApi.searchForWaifu(searchTerm).then((waifu) => {
+            //         console.log(waifu)
+            //     })
+            //     break;
             case "setprefix":
                 for(let perm of modPerms){
                     if(!msg.guild.member(msg.author).hasPermission(perm)){
@@ -122,9 +175,8 @@ client.on( 'message', msg => {
                         return false;
                     }
                 }
-                console.log(args[0])
                 if(args[0] === undefined){
-                    msg.reply("usage: " + config.prefix + "setprefix [prefix]")
+                    msg.reply("usage: " + config.prefix + "setprefix <prefix>")
                     return;
                 }
                 config.prefix = args[0];
@@ -145,11 +197,16 @@ const help = () => {
         .setColor( '#f59542' )
         .setTitle("Available commands")
         .setAuthor( 'WaifuPls', pfp, github )
-        .addField(`${config.prefix}help`, "Sends list of commands")
-        .addField(`${config.prefix}waifupls`, "Sends a random waifu")
-        .addField(`${config.prefix}animepls`, "Sends a random anime (TODO)")
-        .addField(`${config.prefix}setprefix`, "(MOD ONLY) Sets the bot's prefix")
-        .setImage( pfp )
+        .addField(`${config.prefix}help`, "Sends the list of available commands", true)
+        .addField(`${config.prefix}random`, "Sends a random waifu", true)
+        .addField(`${config.prefix}daily`, "Sends the waifu of the day", true)
+        .addField(`${config.prefix}best`, "Sends the top 10 best waifus of the season", true)
+        .addField(`${config.prefix}popular`, "Sends the top 10 most popular waifus of the season", true)
+        .addField(`${config.prefix}trash`, "Sends the top 10 most trash waifus of the season", true)
+        .addField(`${config.prefix}search <waifu>`, "Sends information about the given waifu (TODO)", true)
+        .addField(`${config.prefix}setprefix <prefix>`, "(MOD ONLY) Sets the bot's prefix", true)
+        .addField(`${config.prefix}animepls`, "Sends a random anime (TODO)", true)
+        .setThumbnail( pfp )
         .setTimestamp()
         .setFooter( 'WaifuPls', pfp )
 }
