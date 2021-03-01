@@ -20,12 +20,20 @@ class WaifuApi {
     }
 
     getWaifu(slug) {
-        this.axios.get('waifu/' + slug).then((response) => {
-            return response.data;
-        }).catch((exception) => {
-            console.log(exception.message)
-            resolve(null);
+        return new Promise((resolve) => {
+            this.axios.get('waifu/' + slug).then((response) => {
+                resolve(response.data);
+            }).catch((exception) => {
+                console.log(exception.message);
+                resolve(null);
+            })
         })
+        // this.axios.get('waifu/' + slug).then((response) => {
+        //     return response.data;
+        // }).catch((exception) => {
+        //     console.log(exception.message)
+        //     resolve(null);
+        // })
     }
 
     searchForWaifu(term) {
