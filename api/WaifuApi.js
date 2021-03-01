@@ -28,12 +28,6 @@ class WaifuApi {
                 resolve(null);
             })
         })
-        // this.axios.get('waifu/' + slug).then((response) => {
-        //     return response.data;
-        // }).catch((exception) => {
-        //     console.log(exception.message)
-        //     resolve(null);
-        // })
     }
 
     searchForWaifu(term) {

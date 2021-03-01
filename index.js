@@ -133,27 +133,21 @@ const embed = (title, data, color = "#f59542") => {
             {name: 'Likes', value: data.data.likes, inline: true},
             {name: 'Trash', value: data.data.trash, inline: true},
         ];
-    data.data.age !== undefined && data.data.age !== null && data.data.age !== 0 ? fields.push({
-        name: 'Age',
-        value: data.data.age, inline: true
-    }) : null;
-    data.data.weight !== undefined && data.data.weight !== null ? fields.push({
-        name: 'Weight',
-        value: data.data.weight + 'kg', inline: true
-    }) : null;
-    const birthYear = data.data.birthday_year === null || data.data.birthday_year === '' ? "" : ", " + data.data.birthday_year;
-    data.data.birthday_month !== null && data.data.birthday_day !== 0 && data.data.birthday_year !== 0 ? fields.push({
-        name: 'Birthday',
-        value: data.data.birthday_month + ' ' + data.data.birthday_day + birthYear, inline: true
-    }) : null;
-    data.data.height !== undefined && data.data.height !== null ? fields.push({
-        name: 'Height',
-        value: data.data.height + 'cm', inline: true
-    }) : null;
-    data.data.popularity_rank !== undefined && data.data.popularity_rank !== null ? fields.push({
-        name: 'Popularity rank',
-        value: '#' + data.data.popularity_rank, inline: true
-    }) : null;
+
+    const extraData = {
+        "age": " y/o", "weight": "kg", "height": "cm", "popularity_rank": "",
+        "birthday_year": "", "birthday_month": "", "birthday_day": ""
+    };
+
+    Object.keys(extraData).forEach(i => {
+        if(data.data[i] !== undefined && data.data[i] !== null && data.data[i] !== 0 && data.data[i] !== ''){
+            fields.push({
+                name: i[0].toUpperCase() + i.slice(1).replace("_", " "),
+                value: i === "popularity_rank" ? '#' + data.data[i] : data.data[i] + extraData[i],
+                inline: true
+            })
+        }
+    })
 
     return new discord.MessageEmbed()
         .setColor(color)
